@@ -76,7 +76,7 @@ public class UsuarioService {
     }
 
     @Transactional
-public UsuarioRespuestaDTO actualizarUsuario(Integer id, UsuarioActualizacionDTO dto) {
+    public UsuarioRespuestaDTO actualizarUsuario(Integer id, UsuarioActualizacionDTO dto) {
     // 1. Buscar el usuario existente o lanzar excepción
     Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
@@ -136,5 +136,20 @@ public void eliminarUsuario(Integer id) {
                 .estado(usuario.getEstado())
                 .fechaRegistro(usuario.getFechaRegistro())
                 .build();
+    }
+
+    /**
+     * Busca una lista de usuarios a partir de una lista de IDs.
+     * Este método es optimo para que otros servicios pidan información de múltiples usuarios en una sola llamada.
+     * @param ids La lista de IDs de usuarios a buscar.
+     * @return Una lista de DTOs de los usuarios encontrados.
+     */
+    public List<UsuarioRespuestaDTO> buscarUsuariosPorIds(List<Integer> ids) {
+        // Usamos el método `findAllById` que nos provee JpaRepository.
+        return usuarioRepository.findAllById(ids)
+                .stream()
+                // Usamos el mapper que ya tienes para convertir cada entidad a DTO.
+                .map(usuarioMapper::toUsuarioRespuestaDTO)
+                .collect(Collectors.toList());
     }
 }

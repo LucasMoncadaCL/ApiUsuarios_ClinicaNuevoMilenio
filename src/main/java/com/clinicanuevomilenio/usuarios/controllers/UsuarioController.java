@@ -71,4 +71,10 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/por-ids")
+    public ResponseEntity<List<UsuarioRespuestaDTO>> obtenerUsuariosPorIds(@RequestParam List<Integer> ids) {
+        List<UsuarioRespuestaDTO> usuarios = usuarioService.buscarUsuariosPorIds(ids);
+        return ResponseEntity.ok(usuarios);
+    }
 }
