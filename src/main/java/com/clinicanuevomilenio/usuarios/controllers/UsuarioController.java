@@ -77,4 +77,10 @@ public class UsuarioController {
         List<UsuarioRespuestaDTO> usuarios = usuarioService.buscarUsuariosPorIds(ids);
         return ResponseEntity.ok(usuarios);
     }
+
+    @GetMapping("/por-rol")
+    public ResponseEntity<List<UsuarioRespuestaDTO>> obtenerUsuariosPorRol(@RequestParam String rol) {
+        List<UsuarioRespuestaDTO> usuarios = usuarioService.buscarPorRol(rol);
+        return ResponseEntity.ok(usuarios);
+    }
 }

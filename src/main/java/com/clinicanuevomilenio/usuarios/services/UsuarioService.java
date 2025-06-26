@@ -38,6 +38,13 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
 
     @Transactional
+    public List<UsuarioRespuestaDTO> buscarPorRol(String nombreRol) {
+        return usuarioRepository.findByRol_NombreIgnoreCase(nombreRol).stream()
+                .map(this::convertirAUsuarioRespuestaDTO) // Asumo que tienes un método similar para convertir
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public UsuarioRespuestaDTO crearUsuario(UsuarioCreacionRequest request) {
         // 1. Validar y buscar el Rol
         Rol rol = rolRepository.findById(request.getRolId())
